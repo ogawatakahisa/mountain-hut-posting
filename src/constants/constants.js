@@ -10,7 +10,8 @@ const LABELS = {
   NOT_NAME: "not氏名in予約表",
   RESERVATION_LIMIT: "予約上限",
   NOT_NAME_LABEL: "not氏名",
-  TEST_RANGE: "テスト範囲外"
+  TEST_RANGE: "テスト範囲外",
+  NOT_BIKO_IN_YOYAKU: "not備考in予約表",
 };
 
 const LODGE_NAMES = ["夏沢鉱泉", "根石岳山荘", "硫黄岳山荘"];

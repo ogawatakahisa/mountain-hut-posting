@@ -1,18 +1,10 @@
-// formatUtils.js
 
-// 既存の関数内容の全てを書き出します。
-
-/**
-* 電話番号にハイフンをつける関数
-*/
+// 電話番号にハイフンをつける関数
 function formatPhoneNumber(plainBody) {
   let orignumber;
   let number;
 
-  // orignumber変数に電話番号を格納する
   orignumber = (plainBody.match(/電話番号：(.*)/) || ["", "エラー"])[1].trim();
-
-  // ハイフンや余分な空白を削除
   number = orignumber.replace(/[-\s]/g, '');
 
   // 携帯電話 (例: 080-1234-5678)
@@ -49,18 +41,14 @@ function formatPhoneNumber(plainBody) {
   return [number, orignumber];
 }
 
-/**
-* シート名を取得する
-*/
+// シート名を取得する
 function getSheetNameFromDate(date) {
   let day = date.getDate();
   let dayOfWeek = DAYS_OF_WEEK[date.getDay()];
   return `${day}（${dayOfWeek}）`;
 }
 
-/**
-* 件名から基準日を取得
-*/
+// 件名から基準日を取得
 function getDateFromSubject(subject) {
   let datePattern = /(\d{4})\/(\d{2})\/(\d{2})/; //YYYY/MM/DDにのみ対応
   let matches = subject.match(datePattern);
@@ -73,12 +61,9 @@ function getDateFromSubject(subject) {
   return null;
 }
 
-/**
-* 部屋情報の抽出と変換
-*/
+// 部屋情報の抽出と変換
 function getRoomInfo(plainBody, lodgeName) {
   let prevalue;
-  // 部屋情報は夏沢は「相部屋可否：」。それ以外は「個室希望有無：」
   if (lodgeName === "夏沢鉱泉") {
     prevalue = (plainBody.match(/相部屋可否：\s*([^\n]*)/) || ["", "エラー"]);
   } else if (lodgeName === "硫黄岳山荘" || lodgeName === "根石岳山荘") {
@@ -103,7 +88,7 @@ function getRoomInfo(plainBody, lodgeName) {
     }
   } else if (lodgeName === "根石岳山荘") {
     if (roomSharingInfo.includes("個室希望なし")) {
-      roomSharingInfo = ""; // ブランク
+      roomSharingInfo = "";
     } else if (roomSharingInfo.includes("個室希望")) {
       roomSharingInfo = "希望";
     } else if (roomSharingInfo.includes("個室条件")) {
@@ -111,7 +96,7 @@ function getRoomInfo(plainBody, lodgeName) {
     }
   } else if (lodgeName === "硫黄岳山荘") {
     if (roomSharingInfo.includes("個室希望なし")) {
-      roomSharingInfo = ""; // ブランク
+      roomSharingInfo = "";
     } else if (roomSharingInfo.includes("一般個室希望")) {
       roomSharingInfo = "一般希望";
     } else if (roomSharingInfo.includes("ラグジュアリー個室希望")) {
@@ -123,13 +108,10 @@ function getRoomInfo(plainBody, lodgeName) {
   return roomSharingInfo;
 }
 
-/**
-* 人数情報の抽出
-*/
+// 人数情報の抽出
 function extractGuestsInfo(plainBody) {
   // 合計人数計算用の変数
   let sumresult = 0;
-  // return格納用の変数
   let inputjuniorhigh;
   let inputerement;
   let inputTodd;
@@ -194,9 +176,7 @@ function extractGuestsInfo(plainBody) {
   };
 }
 
-/**
-* 食事情報のフォーマット調整
-*/
+// 食事情報のフォーマット調整
 function formatMealDescription(mealDescription) {
   let formatted = mealDescription.trim()
     .replace(/3食（夕食・朝食・弁当）/g, '２食+弁当')
@@ -208,16 +188,14 @@ function formatMealDescription(mealDescription) {
   return formatted;
 }
 
-/**
-* 送迎時間を取得する関数
-*/
+// 送迎時間を取得する関数
 function getPickupTimeInfo(plainBody, type) {
   let pattern = type === "pickup"
     ? /お迎え\s*(.+?)(?:\s*｜|$)/
     : /お送り\s*(.+?便)/;
 
   let match = plainBody.match(pattern);
-  let time = "なし"; // デフォルト値
+  let time = "なし";
 
   if (match && match[1]) {
     time = match[1].trim();
@@ -241,9 +219,7 @@ function getPickupTimeInfo(plainBody, type) {
   return time;
 }
 
-/**
-* 連絡事項の有無を確認する関数
-*/
+// 連絡事項の有無を確認する関数
 function getContactInfo(plainBody) {
   let contact = false;
   let precontact = plainBody.match(/連絡事項：\s*([\s\S]*)/);
@@ -257,13 +233,11 @@ function getContactInfo(plainBody) {
   return contact;
 }
 
-/**
-* 送迎場所の情報を取得する関数 
-*/
+// 送迎場所の情報を取得する関数
 function getPickupPlaceInfo(plainBody) {
   let pickupTime = getPickupTimeInfo(plainBody, "pickup");
   let dropoffTime = getPickupTimeInfo(plainBody, "dropoff");
-  let place = "エラー"; // デフォルト値
+  let place = "エラー";
   if (pickupTime === "なし" && dropoffTime === "なし") {
     place = "なし";
   } else if (pickupTime === "なし" && dropoffTime !== "なし") {
@@ -288,9 +262,7 @@ function getPickupPlaceInfo(plainBody) {
   return place;
 }
 
-/**
-* 電話番号にハイフンをつける関数
-*/
+// 電話番号にハイフンをつける関数
 function formatPhoneNumber(plainBody) {
   let orignumber;
   let number;
