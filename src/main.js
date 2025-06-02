@@ -117,6 +117,17 @@ function getMailAndWrite(label) {
                       allSuccessful = false;
                       break;
                   }
+                
+                  // msgID重複チェック
+                  const existingIdsRange = sheet.getRange(8, 41, 101);
+                  const existingIds      = existingIdsRange.getValues().flat(); 
+
+                  const thisMsgId = email.msgId;
+                  if (existingIds.includes(thisMsgId)) {
+                    Logger.log(`重複スキップ：メール msgId=${thisMsgId} は既に AO 列に存在`);
+                    return;
+                  }
+                
                   // 氏名が空の行を転記先とする
                   let receptionColumn = findColumn(sheet, "氏名");
 
@@ -219,6 +230,7 @@ function getMailAndWrite(label) {
                           writtenData.push({ sheet: sheet, row: lastRow, column: entry.columnIndex + 1 });
                       }
                   }
+                  sheet.getRange(lastRow, 41).setValue(thisMsgId);
               }
 
           // 連泊で転記できないエラーがあった時のための対策をしていたがロジックを変更する必要がある
